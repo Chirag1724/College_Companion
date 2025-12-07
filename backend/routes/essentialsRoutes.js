@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import fetch from 'node-fetch';
+import { generateAIResponse } from '../utils/geminiClient.js';
 
 const router = express.Router();
 
@@ -37,43 +37,9 @@ router.post('/extract', upload.single('file'), async (req, res) => {
 
     console.log(`📄 Processing file: ${originalname} (${mimetype})`);
 
-    const PERPLEXITY_API_KEY = process.env.PERPLEXITY_API_KEY || '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';
+    const prompt = `File name: ${originalname}\nMIME type: ${mimetype}\nBase64: ${base64File}\n\nPlease analyze this document and return a JSON object with keys creativeTopics, theoryTopics, numericalTopics, and marksDistribution (containing arrays for twoMarks, threeMarks, fourteenMarks, sixteenMarks). Provide concise bullet points for each array. You are an academic analyzer. Extract the core essential topics from the provided syllabus/document and return them as a clean bullet list grouped by importance and mark weightage.`;
 
-    const response = await fetch('https://api.perplexity.ai/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${PERPLEXITY_API_KEY}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'pplx-7b-chat',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an academic analyzer. Extract the core essential topics from the provided syllabus/document and return them as a clean bullet list grouped by importance and mark weightage.'
-          },
-          {
-            role: 'user',
-            content: `File name: ${originalname}\nMIME type: ${mimetype}\nBase64: ${base64File}\n\nPlease analyze this document and return a JSON object with keys creativeTopics, theoryTopics, numericalTopics, and marksDistribution (containing arrays for twoMarks, threeMarks, fourteenMarks, sixteenMarks). Provide concise bullet points for each array.`
-          }
-        ],
-        temperature: 0.2,
-        max_tokens: 2000
-      })
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Perplexity API error:', errorText);
-      return res.json({
-        success: false,
-        error: 'AI request failed',
-        details: errorText
-      });
-    }
-
-    const data = await response.json();
-    const aiContent = data.choices?.[0]?.message?.content?.trim();
+    const aiContent = await generateAIResponse(prompt, { temperature: 0.2, max_tokens: 2000 });
 
     let essentialsPayload;
     if (aiContent) {

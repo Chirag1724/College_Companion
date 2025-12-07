@@ -65,7 +65,7 @@ export const extractEssentials = async (req, res) => {
 
     console.log(`✅ Extracted ${extractedText.length} characters`);
 
-    // Step 2: Extract structured essentials using Perplexity
+    // Step 2: Extract structured essentials using Gemini AI
     const extractionPrompt = `Analyze the following syllabus content and extract semester essentials in strict JSON format.
 
 Syllabus Content:

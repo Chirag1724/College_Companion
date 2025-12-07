@@ -2,7 +2,7 @@ import SurvivalPlan from '../models/SurvivalPlan.js';
 import Note from '../models/Note.js';
 import { generateSurvivalPlan } from '../services/groqSurvivalPlan.js';
 
-// Generate survival plan using Perplexity AI
+// Generate survival plan using Gemini AI
 export const generate = async (req, res) => {
   try {
     const { skills, stressLevel, timeAvailable, examDates, goals, userSkills, userId } = req.body;
@@ -38,7 +38,7 @@ export const generate = async (req, res) => {
     console.log(`   Exams: ${examDatesArrayParsed.join(', ')}`);
     console.log(`   Goals: ${goals}`);
 
-    // Generate plan using Perplexity AI
+    // Generate plan using Gemini AI
     const generatedPlan = await generateSurvivalPlan({
       userSkills: skillsArrayParsed,
       stressLevel,

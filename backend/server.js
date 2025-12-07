@@ -6,6 +6,7 @@ import { fileURLToPath } from 'url';
 import connectDB from './config/db.js';
 import { initializeFirebaseAdmin } from './config/firebaseAdmin.js';
 import { initializeGroqClient } from './services/groqService.js';
+import { initializeGeminiClient } from './utils/geminiClient.js';
 
 // Import NEW user-scoped routes
 import profileRoutes from './routes/profileRoutes.js';
@@ -50,7 +51,16 @@ try {
     console.warn('⚠️  Continuing without Firebase. Auth features will not work.');
   }
 
-  // Initialize Groq API (required)
+  // Initialize Gemini AI (primary AI provider)
+  try {
+    initializeGeminiClient();
+    console.log('');
+  } catch (geminiError) {
+    console.warn('⚠️  Gemini initialization failed:', geminiError.message);
+    console.warn('⚠️  Will use Groq as fallback for all AI operations.');
+  }
+
+  // Initialize Groq API (fallback AI provider)
   initializeGroqClient();
   console.log('');
 } catch (error) {

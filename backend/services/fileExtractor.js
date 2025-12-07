@@ -33,7 +33,7 @@ export const extractFromImageOCR = async (imagePath) => {
 };
 
 /**
- * Extract text from image using Perplexity Vision API
+ * Extract text from image using Gemini Vision API
  */
 export const extractFromImageVision = async (imagePath) => {
   try {

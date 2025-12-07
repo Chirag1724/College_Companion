@@ -117,7 +117,7 @@ export const attendanceQuery = async (req, res) => {
 
 /**
  * POST /api/essentials/extract
- * Extract essentials from uploaded file using Perplexity AI
+ * Extract essentials from uploaded file using Gemini AI
  */
 export const extractEssentials = async (req, res) => {
   try {
@@ -131,7 +131,7 @@ export const extractEssentials = async (req, res) => {
     // Extract text from file
     const fileText = await extractTextFromFile(file);
 
-    // Use Perplexity to structure the content
+    // Use Gemini AI to structure the content
     const essentials = await extractEssentialsFromFile(fileText, file.originalname);
 
     let user = await User.findById(uid);
@@ -157,7 +157,7 @@ export const extractEssentials = async (req, res) => {
 
 /**
  * POST /api/revision/generate
- * Generate revision plan using Perplexity AI
+ * Generate revision plan using Gemini AI
  */
 export const generateRevisionPlan = async (req, res) => {
   try {
@@ -193,7 +193,7 @@ export const generateRevisionPlan = async (req, res) => {
 
 /**
  * POST /api/doubt/ask
- * Solve doubts using Perplexity AI (fallback to Groq)
+ * Solve doubts using Gemini AI (fallback to Groq)
  */
 export const askDoubt = async (req, res) => {
   try {
