@@ -342,3 +342,22 @@ Want to contribute? Check out our [Contributing Guidelines](#-contributing) and 
 [⬆ Back to Top](#-college-companion)
 
 </div>
+
+
+## 📸 Project Screenshots
+
+### 🏠 Homepage
+This is the landing page of the application.
+![Homepage](docs/images/homepage.jpeg)
+
+---
+
+### 📝 Sign Up Page
+This is the user registration interface where students can create an account.
+![Sign Up Page](docs/images/signup-page.jpeg)
+
+---
+
+### 📊 Dashboard Overview
+The dashboard provides an academic overview including attendance, subjects, and alerts.
+![Dashboard](docs/images/dashboard.jpeg)
