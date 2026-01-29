@@ -294,7 +294,9 @@ We welcome contributions! Here's how you can help:
 ## 📝 License
 This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
 ---
-## 👥 Contributors
+
+## 👨‍💼 Project Admin
+
 <table>
 <tr>
     <td align="center">
@@ -302,11 +304,25 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
             <img src="https://github.com/Yugenjr.png" width="100px;" alt="Yugendra N"/>
             <br />
             <sub><b>Yugendra N</b></sub>
+            <br />
+            <sub>Project Admin</sub>
         </a>
     </td>
 </tr>
 </table>
-Want to contribute? Check out our [Contributing Guidelines](#-contributing) and add yourself to this list! 🎉
+
+---
+
+## 👥 Contributors
+
+Thanks to all the amazing contributors who have helped make this project better! ✨
+
+<a href="https://github.com/Yugenjr/College_Companion/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Yugenjr/College_Companion" />
+</a>
+
+Want to contribute? Check out our [Contributing Guidelines](#-contributing) and add yourself to this list!
+
 ---
 ## 🙏 Acknowledgments
 - **AI Services:** Groq, Google Gemini, Perplexity AI
@@ -324,22 +340,3 @@ Want to contribute? Check out our [Contributing Guidelines](#-contributing) and 
 ⭐ Star us on GitHub — it helps!
 [⬆ Back to Top](#-college-companion)
 </div>
-
-
-## 📸 Project Screenshots
-
-### 🏠 Homepage
-This is the landing page of the application.
-![Homepage](docs/images/homepage.jpeg)
-
----
-
-### 📝 Sign Up Page
-This is the user registration interface where students can create an account.
-![Sign Up Page](docs/images/signup-page.jpeg)
-
----
-
-### 📊 Dashboard Overview
-The dashboard provides an academic overview including attendance, subjects, and alerts.
-![Dashboard](docs/images/dashboard.jpeg)
