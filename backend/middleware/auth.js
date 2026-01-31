@@ -39,8 +39,10 @@ export const verifyFirebaseToken = async (req, res, next) => {
 
     next();
   } catch (error) {
-    console.error('❌ Token verification error:', error.message);
-    
+    console.error('❌ Token verification failed. Detailed Error:', JSON.stringify(error, null, 2));
+    console.error('❌ Error Message:', error.message);
+    console.error('❌ Error Code:', error.code);
+
     if (error.code === 'auth/id-token-expired') {
       return res.status(401).json({
         success: false,
@@ -49,10 +51,12 @@ export const verifyFirebaseToken = async (req, res, next) => {
       });
     }
 
+    // Pass the actual error message to the frontend for debugging
     return res.status(401).json({
       success: false,
       error: 'Unauthorized',
-      message: 'Invalid or expired token',
+      message: `Authentication Failed: ${error.message}`,
+      debugCode: error.code
     });
   }
 };
@@ -67,7 +71,7 @@ export const optionalAuth = async (req, res, next) => {
     if (authHeader && authHeader.startsWith('Bearer ')) {
       const token = authHeader.split('Bearer ')[1];
       const decodedToken = await getAuth().verifyIdToken(token);
-      
+
       req.user = {
         uid: decodedToken.uid,
         email: decodedToken.email,
