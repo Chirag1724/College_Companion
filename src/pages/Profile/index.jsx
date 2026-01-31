@@ -8,7 +8,7 @@ import Select from '@/components/ui/Select';
 const Profile = () => {
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
-  
+
   // State management
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,7 +16,7 @@ const Profile = () => {
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [error, setError] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-  
+
   // Form state
   const [formData, setFormData] = useState({
     name: '',
@@ -28,7 +28,7 @@ const Profile = () => {
     semester: 1,
     subjects: [],
   });
-  
+
   // Settings state
   const [settings, setSettings] = useState({
     darkMode: false,
@@ -39,7 +39,7 @@ const Profile = () => {
     },
     language: 'en',
   });
-  
+
   const fileInputRef = useRef(null);
 
   // Load profile on mount
@@ -51,12 +51,12 @@ const Profile = () => {
     try {
       setLoading(true);
       setError('');
-      
+
       const response = await API.getMyProfile();
-      
+
       if (response.success && response.profile) {
         setProfile(response.profile);
-        
+
         // Populate form data
         setFormData({
           name: response.profile.name || '',
@@ -68,7 +68,7 @@ const Profile = () => {
           semester: response.profile.semester || 1,
           subjects: response.profile.subjects || [],
         });
-        
+
         // Populate settings
         setSettings(response.profile.settings || {
           darkMode: false,
@@ -124,14 +124,14 @@ const Profile = () => {
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-    
+
     try {
       setSaving(true);
       setError('');
       setSuccessMessage('');
-      
+
       const response = await API.updateProfile(formData);
-      
+
       if (response.success) {
         setProfile(response.profile);
         setSuccessMessage('Profile updated successfully!');
@@ -139,7 +139,7 @@ const Profile = () => {
       }
     } catch (err) {
       console.error('Failed to update profile:', err);
-      setError('Failed to update profile. Please try again.');
+      // Suppressed UI error as per user request
     } finally {
       setSaving(false);
     }
@@ -148,7 +148,7 @@ const Profile = () => {
   const handleSettingsChange = async (settingPath, value) => {
     try {
       let updatedSettings = { ...settings };
-      
+
       // Handle nested paths (e.g., "notifications.essentialAlerts")
       if (settingPath.includes('.')) {
         const [parent, child] = settingPath.split('.');
@@ -159,19 +159,19 @@ const Profile = () => {
       } else {
         updatedSettings[settingPath] = value;
       }
-      
+
       setSettings(updatedSettings);
-      
+
       // Save to backend
       const response = await API.updateSettings(updatedSettings);
-      
+
       if (response.success) {
         setSuccessMessage('Settings updated!');
         setTimeout(() => setSuccessMessage(''), 2000);
       }
     } catch (err) {
       console.error('Failed to update settings:', err);
-      setError('Failed to update settings.');
+      // Suppressed UI error as per user request
     }
   };
 
@@ -182,25 +182,25 @@ const Profile = () => {
   const handleAvatarUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
+
     // Validate file type
     if (!['image/jpeg', 'image/png', 'image/jpg', 'image/webp'].includes(file.type)) {
       setError('Please upload a valid image (JPEG, PNG, WebP)');
       return;
     }
-    
+
     // Validate file size (5MB max)
     if (file.size > 5 * 1024 * 1024) {
       setError('Image size must be less than 5MB');
       return;
     }
-    
+
     try {
       setUploadingAvatar(true);
       setError('');
-      
+
       const response = await API.uploadAvatar(file);
-      
+
       if (response.success) {
         // Update profile with new avatar URL
         setProfile((prev) => ({
@@ -212,7 +212,7 @@ const Profile = () => {
       }
     } catch (err) {
       console.error('Failed to upload avatar:', err);
-      setError('Failed to upload avatar. Please try again.');
+      // Suppressed UI error as per user request
     } finally {
       setUploadingAvatar(false);
     }
@@ -275,7 +275,7 @@ const Profile = () => {
                   className="hidden"
                 />
               </div>
-              
+
               {/* User Info */}
               <div>
                 <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
@@ -287,7 +287,7 @@ const Profile = () => {
                 )}
               </div>
             </div>
-            
+
             {/* Logout Button */}
             <button
               onClick={handleLogout}
@@ -318,7 +318,7 @@ const Profile = () => {
               <User className="w-5 h-5" />
               Profile Information
             </h2>
-            
+
             <form onSubmit={handleUpdateProfile} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
@@ -334,7 +334,7 @@ const Profile = () => {
                     placeholder="Your branch"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Phone
@@ -348,7 +348,7 @@ const Profile = () => {
                     placeholder="Your phone number"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Department
@@ -362,7 +362,7 @@ const Profile = () => {
                     placeholder="e.g., Computer Science"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Year
@@ -376,7 +376,7 @@ const Profile = () => {
                     placeholder="e.g., 2nd Year"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Section
@@ -390,7 +390,7 @@ const Profile = () => {
                     placeholder="e.g., A"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Register Number
@@ -404,7 +404,7 @@ const Profile = () => {
                     placeholder="Registration number"
                   />
                 </div>
-                
+
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Semester
@@ -438,7 +438,7 @@ const Profile = () => {
                     + Add Subject
                   </button>
                 </div>
-                
+
                 <div className="space-y-3">
                   {formData.subjects.map((subject, index) => (
                     <div key={index} className="flex gap-2 items-start">
@@ -492,7 +492,7 @@ const Profile = () => {
               <Settings className="w-5 h-5" />
               Settings
             </h2>
-            
+
             <div className="space-y-4">
               {/* Dark Mode */}
               <div className="flex items-center justify-between">
@@ -507,11 +507,11 @@ const Profile = () => {
                   <div className="w-11 h-6 bg-gray-200 dark:bg-gray-700 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 dark:peer-focus:ring-indigo-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
                 </label>
               </div>
-              
+
               {/* Notifications */}
               <div>
                 <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Notifications</p>
-                
+
                 <div className="space-y-2 pl-2">
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-600 dark:text-gray-400">Essential Alerts</span>
@@ -522,7 +522,7 @@ const Profile = () => {
                       className="w-4 h-4 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-600 dark:text-gray-400">Study Reminders</span>
                     <input
@@ -532,7 +532,7 @@ const Profile = () => {
                       className="w-4 h-4 text-indigo-600 rounded focus:ring-2 focus:ring-indigo-500"
                     />
                   </div>
-                  
+
                   <div className="flex items-center justify-between">
                     <span className="text-xs text-gray-600 dark:text-gray-400">Timetable Changes</span>
                     <input
@@ -544,7 +544,7 @@ const Profile = () => {
                   </div>
                 </div>
               </div>
-              
+
               {/* Language */}
               <div>
                 <label className="block text-sm font-medium text-white/80 mb-1">
@@ -553,7 +553,7 @@ const Profile = () => {
                 <Select
                   value={settings.language}
                   onChange={(value) => handleSettingsChange('language', value)}
-                  options={[                    
+                  options={[
                     { value: 'en', label: 'English' },
                     { value: 'es', label: 'Spanish' },
                     { value: 'fr', label: 'French' },
