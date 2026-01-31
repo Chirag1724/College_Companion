@@ -1,10 +1,10 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { 
-  onAuthStateChanged, 
+import {
+  onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signInWithPopup,
-  signOut 
+  signOut
 } from "firebase/auth";
 import { auth, googleProvider } from "@/firebase/config";
 
@@ -26,12 +26,12 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
-      
+
       if (user) {
         // Fetch or create user profile from backend
         try {
-          const response = await fetch(`/api/users/${user.uid}`);
-          
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/users/${user.uid}`);
+
           if (response.ok) {
             const contentType = response.headers.get("content-type");
             if (contentType && contentType.includes("application/json")) {
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
             }
           } else if (response.status === 404) {
             // User not found in database - create profile
-            const createResponse = await fetch("/api/users", {
+            const createResponse = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/users`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }) => {
                 photoURL: user.photoURL || null
               }),
             });
-            
+
             if (createResponse.ok) {
               const data = await createResponse.json();
               if (data.success && data.user) {
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
       } else {
         setUserProfile(null);
       }
-      
+
       setLoading(false);
     });
 
@@ -113,33 +113,33 @@ export const AuthProvider = ({ children }) => {
     try {
       // Get Firebase auth token
       const token = await currentUser?.getIdToken();
-      
+
       if (!token) {
         throw new Error("Not authenticated. Please login again.");
       }
 
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/profile/setup`, {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(profileData),
       });
-      
+
       const data = await response.json();
-      
+
       if (!response.ok) {
         console.error("❌ Profile setup failed:", data);
         throw new Error(data.message || data.error || "Failed to create user profile");
       }
-      
+
       if (data.success && data.profile) {
         console.log("✅ Profile created successfully:", data.profile);
         setUserProfile(data.profile);
         return data.profile;
       }
-      
+
       throw new Error("Invalid response from server");
     } catch (error) {
       console.error("❌ createUserProfile error:", error);
@@ -149,16 +149,16 @@ export const AuthProvider = ({ children }) => {
 
   // Save onboarding data
   const saveOnboarding = async (userId, onboardingData) => {
-    const response = await fetch(`/api/users/${userId}/onboarding`, {
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api/users/${userId}/onboarding`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(onboardingData),
     });
-    
+
     if (!response.ok) {
       throw new Error("Failed to save onboarding data");
     }
-    
+
     const updatedProfile = await response.json();
     setUserProfile(updatedProfile);
     return updatedProfile;

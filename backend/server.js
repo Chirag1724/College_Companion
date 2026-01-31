@@ -80,18 +80,23 @@ app.use(express.urlencoded({ extended: true }));
 // CORS Configuration - Allow all localhost origins for development
 const allowedOrigins = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175'];
+  : ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'https://mernproj1.vercel.app'];
 
 app.use(cors({
   origin: (origin, callback) => {
     // Allow requests with no origin (mobile apps, Postman, etc.)
     if (!origin) return callback(null, true);
-    
+
     // In development, allow all localhost origins
     if (process.env.NODE_ENV !== 'production' && origin && origin.includes('localhost')) {
       return callback(null, true);
     }
-    
+
+    // Allow all Vercel deployments (preview & production)
+    if (origin && origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+
     if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -180,7 +185,7 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error('❌ Unhandled error:', err.message);
   console.error(err.stack);
-  
+
   if (err.message === 'Not allowed by CORS') {
     return res.status(403).json({
       success: false,
