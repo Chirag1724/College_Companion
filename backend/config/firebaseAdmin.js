@@ -21,8 +21,9 @@ export const initializeFirebaseAdmin = () => {
   try {
     let serviceAccount;
 
-    // Option 1: Load from service account JSON file
-    if (process.env.FIREBASE_SERVICE_ACCOUNT_PATH) {
+    // Option 1: Load from service account JSON file (ONLY IN DEVELOPMENT)
+    // We check for NODE_ENV !== 'production' to ensure Render never tries this path, even if the var exists
+    if (process.env.FIREBASE_SERVICE_ACCOUNT_PATH && process.env.NODE_ENV !== 'production') {
       const serviceAccountPath = join(__dirname, '..', process.env.FIREBASE_SERVICE_ACCOUNT_PATH);
       serviceAccount = JSON.parse(readFileSync(serviceAccountPath, 'utf8'));
     }
