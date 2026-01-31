@@ -6,6 +6,7 @@ import HowItWorksSection from './Landing/HowItWorksSection';
 import TestimonialsSection from './Landing/TestimonialsSection';
 import CTASection from './Landing/CTASection';
 import LandingFooter from '../components/LandingFooter';
+import BackToTop from '../components/BackToTop';
 
 const Landing = () => {
     return (
@@ -23,6 +24,7 @@ const Landing = () => {
             <TestimonialsSection />
             <CTASection />
             <LandingFooter />
+            <BackToTop />
         </div>
     );
 };

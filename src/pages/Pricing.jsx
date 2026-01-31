@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import LandingNavbar from '../components/LandingNavbar';
 import PricingSection from './Landing/PricingSection';
 import LandingFooter from '../components/LandingFooter';
+import BackToTop from '../components/BackToTop';
 
 const Pricing = () => {
     useEffect(() => {
@@ -20,6 +21,7 @@ const Pricing = () => {
                 <PricingSection />
             </div>
             <LandingFooter />
+            <BackToTop />
         </div>
     );
 };
