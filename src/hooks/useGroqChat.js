@@ -38,9 +38,9 @@ export function useGroqChat() {
 
     try {
       // Get backend URL from environment or use proxy
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+      const backendUrl = import.meta.env.VITE_API_BASE_URL || '';
       const apiUrl = `${backendUrl}/api/ai-attendance/chat`;
-      
+
       // Call the backend AI endpoint
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -76,7 +76,7 @@ export function useGroqChat() {
       }
 
       const data = await response.json();
-      
+
       // Add AI response to history
       const aiMsg = {
         id: Date.now() + 1,
@@ -85,9 +85,9 @@ export function useGroqChat() {
         timestamp: new Date().toISOString(),
         metadata: data.metadata || {},
       };
-      
+
       setMessages(prev => [...prev, aiMsg]);
-      
+
       // Call onResponse callback if provided
       if (onResponse) {
         onResponse(aiMsg);
@@ -95,7 +95,7 @@ export function useGroqChat() {
     } catch (err) {
       console.error("Chat error:", err);
       setError(err.message);
-      
+
       // Add error message to chat
       const errorMsg = {
         id: Date.now() + 1,

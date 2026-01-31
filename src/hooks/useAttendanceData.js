@@ -72,10 +72,10 @@ export function useAttendanceData() {
    * Update attendance statistics
    */
   const updateAttendance = (totalClasses, attendedClasses) => {
-    const percentage = totalClasses > 0 
-      ? Math.round((attendedClasses / totalClasses) * 100 * 10) / 10 
+    const percentage = totalClasses > 0
+      ? Math.round((attendedClasses / totalClasses) * 100 * 10) / 10
       : 0;
-    
+
     setAttendanceData(prev => ({
       ...prev,
       totalClasses,
@@ -111,12 +111,12 @@ export function useAttendanceData() {
   const uploadAcademicCalendar = async (file) => {
     try {
       console.log("📤 Uploading academic calendar:", file.name);
-      
+
       const formData = new FormData();
       formData.append('userId', 'current-user'); // TODO: Replace with actual user ID
       formData.append('file', file);
 
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+      const backendUrl = import.meta.env.VITE_API_BASE_URL || '';
       const response = await fetch(`${backendUrl}/api/ai-attendance/upload/calendar`, {
         method: 'POST',
         body: formData
@@ -128,11 +128,11 @@ export function useAttendanceData() {
       }
 
       const data = await response.json();
-      
+
       if (data.success) {
-        setUserConfig(prev => ({ 
-          ...prev, 
-          academicCalendar: data.data 
+        setUserConfig(prev => ({
+          ...prev,
+          academicCalendar: data.data
         }));
         console.log("✅ Calendar uploaded successfully");
         return data.data;
@@ -151,12 +151,12 @@ export function useAttendanceData() {
   const uploadWeeklyTimetable = async (file) => {
     try {
       console.log("📤 Uploading timetable:", file.name);
-      
+
       const formData = new FormData();
       formData.append('userId', 'current-user'); // TODO: Replace with actual user ID
       formData.append('file', file);
 
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+      const backendUrl = import.meta.env.VITE_API_BASE_URL || '';
       const response = await fetch(`${backendUrl}/api/ai-attendance/upload/timetable`, {
         method: 'POST',
         body: formData
@@ -168,11 +168,11 @@ export function useAttendanceData() {
       }
 
       const data = await response.json();
-      
+
       if (data.success) {
-        setUserConfig(prev => ({ 
-          ...prev, 
-          weeklyTimetable: data.data 
+        setUserConfig(prev => ({
+          ...prev,
+          weeklyTimetable: data.data
         }));
         console.log("✅ Timetable uploaded successfully");
         return data.data;
