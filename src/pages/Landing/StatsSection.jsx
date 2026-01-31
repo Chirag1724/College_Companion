@@ -33,7 +33,13 @@ const StatsSection = () => {
                         >
                             <div className="relative inline-block">
                                 <div className="absolute inset-0 blur-2xl bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 group-hover:from-violet-500/30 group-hover:to-fuchsia-500/30 transition-all duration-500" />
-                                <div className="relative text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-3" style={{ fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif' }}>
+                                <div
+                                    className={`relative font-bold bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent mb-3 transition-all duration-300 ${stat.value.length > 5
+                                            ? 'text-3xl md:text-4xl lg:text-5xl'
+                                            : 'text-5xl md:text-6xl lg:text-7xl'
+                                        }`}
+                                    style={{ fontFamily: '"SF Pro Display", -apple-system, BlinkMacSystemFont, sans-serif' }}
+                                >
                                     {stat.value}
                                 </div>
                             </div>
